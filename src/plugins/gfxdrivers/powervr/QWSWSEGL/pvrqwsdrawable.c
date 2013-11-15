@@ -118,9 +118,9 @@ static int pvrQwsInitFbScreen(int screen)
         }
     }
     if (format == PVR2D_1BPP) {
-        fprintf(stderr, "%s: could not find a suitable PVR2D pixel format\n", name);
-        close(fd);
-        return 0;
+        fprintf(stderr, "%s: no suitable PVR2D pixel format(R%u-%u, G%u-%u, B%u-%u, A%u-%u)\n", name, var.red.length, var.red.offset, var.green.length, var.green.offset, var.blue.length, var.blue.offset, var.transp.length, var.transp.offset);
+        format = PVR2D_ARGB8888;
+        //close(fd); return 0;
     }
     start = fix.smem_start;
     length = var.xres_virtual * var.yres_virtual * bytesPerPixel;
