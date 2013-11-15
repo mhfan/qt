@@ -85,6 +85,9 @@ PvrEglScreen::~PvrEglScreen()
 bool PvrEglScreen::initDevice()
 {
     openTty();
+#ifndef QT_NO_QWS_CURSOR
+    QScreenCursor::initSoftwareCursor();
+#endif
     return true;
 }
 

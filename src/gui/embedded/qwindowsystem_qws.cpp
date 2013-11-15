@@ -3499,7 +3499,6 @@ void QWSServerPrivate::update_regions()
         }
 
 #ifdef QT_QWS_CLIENTBLIT
-#ifdef QT_NO_QWS_CURSOR
         // This optimization only really works when there isn't a crazy cursor
         // wizzing around.
         QRegion directPaint = (r - transparentRegion); // in gloal coords
@@ -3510,7 +3509,6 @@ void QWSServerPrivate::update_regions()
             w->client()->sendRegionEvent(w->winId(), directPaint,
                                          QWSRegionEvent::DirectPaint, id);
         }
-#endif
 #endif
     }
 
