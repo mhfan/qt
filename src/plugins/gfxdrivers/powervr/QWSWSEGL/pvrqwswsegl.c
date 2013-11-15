@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include <GLES/eglplatform.h>
+#include <EGL/eglplatform.h>
 #include <wsegl.h>
 #include <pvr2d.h>
 #include <string.h>
