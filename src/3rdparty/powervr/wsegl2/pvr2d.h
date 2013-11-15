@@ -1,40 +1,48 @@
-/**********************************************************************
-*
-* Copyright(c) Imagination Technologies Ltd.
-*
-* The contents of this file are subject to the MIT license as set out below.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-* DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-* OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-* OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*
-* This License is also included in this distribution in the file called
-* "COPYING".
-*
-******************************************************************************/
+/*************************************************************************/ /*!
+@Copyright      Copyright (c) Imagination Technologies Ltd. All Rights Reserved
+@License        Dual MIT/GPLv2
 
+The contents of this file are subject to the MIT license as set out below.
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-/******************************************************************************
-Modifications :-
-$Log: pvr2d.h $
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
- --- Revision Logs Removed ---
-******************************************************************************/
+Alternatively, the contents of this file may be used under the terms of
+the GNU General Public License Version 2 ("GPL") in which case the provisions
+of GPL are applicable instead of those above.
+
+If you wish to allow use of your version of this file only under the terms of
+GPL, and not to allow others to use your version of this file under the terms
+of the MIT license, indicate your decision by deleting the provisions above
+and replace them with the notice and other provisions required by GPL as set
+out in the file called "GPL-COPYING" included in this distribution. If you do
+not delete the provisions above, a recipient may use your version of this file
+under the terms of either the MIT license or GPL.
+
+This License is also included in this distribution in the file called
+"MIT-COPYING".
+
+EXCEPT AS OTHERWISE STATED IN A NEGOTIATED AGREEMENT: (A) THE SOFTWARE IS
+PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT; AND (B) IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/ /**************************************************************************/ 
+ 
+ /******************************************************************************
+ Modifications :-
+ $Log: pvr2d.h $
+ ******************************************************************************/
 
 #ifndef _PVR2D_H_
 #define _PVR2D_H_
@@ -54,7 +62,7 @@ extern "C" {
 
 /* PVR2D header revision */
 #define PVR2D_REV_MAJOR		3
-#define PVR2D_REV_MINOR		5
+#define PVR2D_REV_MINOR		6
 
 /* Basic types */
 typedef enum
@@ -67,13 +75,20 @@ typedef void* PVR2D_HANDLE;
 
 typedef char             PVR2D_CHAR,	*PVR2D_PCHAR;
 typedef unsigned char    PVR2D_UCHAR,	*PVR2D_PUCHAR;
+
 typedef int              PVR2D_INT,		*PVR2D_PINT;
 typedef unsigned int     PVR2D_UINT,	*PVR2D_PUINT;
+
+typedef unsigned short	 PVR2D_UINT16,	*PVR2D_PUINT16;
+typedef signed short	 PVR2D_INT16,	*PVR2D_PINT16;
+
 typedef long             PVR2D_LONG,	*PVR2D_PLONG;
 typedef unsigned long    PVR2D_ULONG,	*PVR2D_PULONG;
 
 typedef void             PVR2D_VOID,	*PVR2D_PVOID;
 
+/* services/stream ID */
+typedef unsigned int      PVR2D_SID;
 
 /* error codes */
 typedef enum
@@ -99,7 +114,7 @@ typedef unsigned long PVR2DFORMAT;
 #define	PVR2D_1BPP						0x00UL // 1bpp mask surface or palletized 1 bit source with 2x32 bit CLUT
 #define	PVR2D_RGB565					0x01UL // Common rgb 565 format
 #define	PVR2D_ARGB4444					0x02UL // Common argb 4444 format
-#define	PVR2D_RGB888					0x03UL // Common rgb 888 format (not supported)
+#define	PVR2D_RGB888					0x03UL // Common rgb 888 format
 #define	PVR2D_ARGB8888					0x04UL // Common argb 8888 format
 #define	PVR2D_ARGB1555					0x05UL // Common argb 1555 format
 #define	PVR2D_ALPHA8					0x06UL // Alpha-only 8 bit per pixel (used with a constant fill colour)
@@ -114,16 +129,19 @@ typedef unsigned long PVR2DFORMAT;
 #define PVR2D_YUV422_UYVY				0x14UL // YUV 422 low-high byte order UY0VY1
 #define PVR2D_YUV422_YVYU				0x15UL // YUV 422 low-high byte order Y0VY1U
 #define PVR2D_YUV422_VYUY				0x16UL // YUV 422 low-high byte order VY0UY1
-#define PVR2D_YUV420_2PLANE				0x17UL // YUV420 2 Plane
-#define PVR2D_YUV420_3PLANE				0x18UL // YUV420 3 Plane
+#define PVR2D_YUV420_2PLANE				0x17UL // YUV420 2 Plane with UV interleaved in plane 2
+#define PVR2D_YVU420_3PLANE				0x18UL // YVU420 3 Plane
+#define PVR2D_YUV420_3PLANE				0x21UL // YUV420 3 Plane
 #define PVR2D_2101010ARGB				0x19UL // 32 bit 2 10 10 10
-#define PVR2D_888RSGSBS					0x1AUL
+#define PVR2D_888RSGSBS					0x1AUL // 3 channel signed 8 bit
 #define PVR2D_16BPP_RAW					0x1BUL // 16 bit raw (no format conversion)
 #define PVR2D_32BPP_RAW					0x1CUL // 32 bit raw
 #define PVR2D_64BPP_RAW					0x1DUL // 64 bit raw
 #define PVR2D_128BPP_RAW				0x1EUL // 128 bit raw
 
-#define	PVR2D_NO_OF_FORMATS				0x1FUL
+#define PVR2D_AYUV8888					0x1FUL
+#define PVR2D_F16						0x20UL
+#define	PVR2D_NO_OF_FORMATS				0x22UL
 
 /* Format modifier bit field (DstFormat and SrcFormat bits 16..23) */
 #define PVR2D_FORMAT_MASK				0x0000FFFFUL	// PVR2D Format bits
@@ -142,6 +160,7 @@ typedef unsigned long PVR2DFORMAT;
 	Not needed if the surface state has resulted from previous SGX 2D/3D core writes.
 */
 #define PVR2D_SURFACE_PDUMP				0x00100000UL	// calls PVRSRVPDumpMem to capture the surface (pdump builds only)
+#define PVR2D_BLTRECT_PDUMP				0x00200000UL	// calls PVRSRVPDumpMem to capture the blt rectangle (pdump builds only) 
 
 /*
 	Low level 3D format extension - for blts via the 3D core only.
@@ -155,8 +174,7 @@ typedef unsigned long PVR2DFORMAT;
 typedef enum
 {
 	PVR2D_WRAPFLAG_NONCONTIGUOUS = 0,
-	PVR2D_WRAPFLAG_CONTIGUOUS = 1,
-
+	PVR2D_WRAPFLAG_CONTIGUOUS = 1
 }PVR2DWRAPFLAGS;
 
 #define	PVR2D_CONTEXT_FLAGS_PRIORITY_MASK			0x00000003
@@ -171,7 +189,7 @@ typedef enum
 	PVR2D_BLIT_DISABLE_ALL					= 0x00000000,	/* disable all additional controls */
 	PVR2D_BLIT_CK_ENABLE					= 0x00000001,	/* enable colour key */
 	PVR2D_BLIT_GLOBAL_ALPHA_ENABLE			= 0x00000002,	/* enable standard global alpha */
-	PVR2D_BLIT_PERPIXEL_ALPHABLEND_ENABLE	= 0x00000004,	/* enable per-pixel alpha bleding */
+	PVR2D_BLIT_PERPIXEL_ALPHABLEND_ENABLE	= 0x00000004,	/* enable per-pixel alpha blending */
 	PVR2D_BLIT_PAT_SURFACE_ENABLE			= 0x00000008,	/* enable pattern surf (disable fill) */
 	PVR2D_BLIT_FULLY_SPECIFIED_ALPHA_ENABLE	= 0x00000010,	/* enable fully specified alpha */
 	PVR2D_BLIT_ROT_90						= 0x00000020,	/* apply 90 degree rotation to the blt */
@@ -186,11 +204,12 @@ typedef enum
 	PVR2D_BLIT_COLKEY_MASKED				= 0x00004000,	/* Mask enabled for colour key */
 	PVR2D_BLIT_COLKEY_OP_PASS				= 0x00008000,	/* Colour key op = pass */
 	PVR2D_BLIT_COLKEY_OP_REJECT				= 0x00010000,	/* Colour key op = reject */
+	PVR2D_BLIT_ROP4							= 0x00020000,	/* rop4 pattern support */
 	PVR2D_BLIT_PATH_2DCORE					= 0x00100000,	/* Blt via dedicated 2D Core or PTLA */
 	PVR2D_BLIT_PATH_3DCORE					= 0x00200000,	/* Blt via 3D Core */
 	PVR2D_BLIT_PATH_SWBLT					= 0x00400000,	/* Blt via host software */
 	PVR2D_BLIT_NO_SRC_SYNC_INFO				= 0x00800000,	/* Dont send a source sync info*/
-	PVR2D_BLIT_ISSUE_STATUS_UPDATES			= 0x01000000,	/* Issue status updates */
+	PVR2D_BLIT_ISSUE_STATUS_UPDATES			= 0x01000000,	/* Issue SyncInfo status updates */
 
 } PVR2DBLITFLAGS;
 
@@ -288,6 +307,17 @@ typedef struct _PVR2MISCDISPLAYINFO
 
 }PVR2DMISCDISPLAYINFO;
 
+typedef struct
+{
+	PVR2DMEMINFO	*pSurfMemInfo;		/* surface memory */
+	PVR2D_ULONG		SurfOffset;			/* byte offset from start of allocation to destination surface pixel 0,0 */
+	PVR2D_LONG		Stride;				/* signed stride */
+	PVR2DFORMAT		Format;				/* format */
+	PVR2D_ULONG		SurfWidth;			/* surface width in pixels */
+	PVR2D_ULONG		SurfHeight;			/* surface height in pixels */
+
+} PVR2D_SURFACE, *PPVR2D_SURFACE;
+
 
 typedef struct _PVR2DBLTINFO
 {
@@ -336,24 +366,17 @@ typedef struct _PVR2DBLTINFO
 
 	PVR2D_ULONG		ColourKeyMask;		/* 32 bit colour key mask, only valid when PVR2D_BLIT_COLKEY_MASKED is set */
 
+	PPVR2D_SURFACE	pPat;				/* full rop4 support for patterns if PVR2D_BLIT_ROP4 set (2D Core hardware only) */
+	PVR2D_LONG		PatX, PatY;			/* pattern start offset if PVR2D_BLIT_ROP4 set (2D Core hardware only) */
+
 }PVR2DBLTINFO, *PPVR2DBLTINFO;
+
 
 typedef struct _PVR2DRECT
 {
 	PVR2D_LONG left, top;
 	PVR2D_LONG right, bottom;
-} PVR2DRECT;
-
-typedef struct
-{
-	PVR2DMEMINFO	*pSurfMemInfo;		/* surface memory */
-	PVR2D_ULONG		SurfOffset;			/* byte offset from start of allocation to destination surface pixel 0,0 */
-	PVR2D_LONG		Stride;				/* signed stride */
-	PVR2DFORMAT		Format;				/* format */
-	PVR2D_ULONG		SurfWidth;			/* surface width in pixels */
-	PVR2D_ULONG		SurfHeight;			/* surface height in pixels */
-
-} PVR2D_SURFACE, *PPVR2D_SURFACE;
+} PVR2DRECT, *PPVR2DRECT;
 
 typedef struct
 {
@@ -498,7 +521,8 @@ typedef void* PVR2DFLIPCHAINHANDLE;
 #define CFILL_565(P)		(((P&0xF800UL)<<8)  | ((P&0x7E0UL)<<5)   | ((P&0x1FUL)<<3))
 
 /* PVR2DCreateDeviceContext flags */
-#define PVR2D_XSERVER_PROC			0x00000001UL		/*!< Set for the Xserver connection */
+#define PVR2D_XSERVER_PROC			0x00000001UL		/* Set for the Xserver connection */
+#define PVR2D_FLAGS_PDUMP_ACTIVE	0x00000002UL		/* Set when pdumping from multiple processes */
 
 /* PVR2DMemAlloc flags */
 #define PVR2D_MEM_UNCACHED			0x00000000UL	/* Default */
@@ -508,7 +532,7 @@ typedef void* PVR2DFLIPCHAINHANDLE;
 /* Functions that the library exports */
 
 PVR2D_IMPORT
-int PVR2DEnumerateDevices(PVR2DDEVICEINFO *pDevInfo);
+PVR2D_INT PVR2DEnumerateDevices(PVR2DDEVICEINFO *pDevInfo);
 
 PVR2D_IMPORT
 PVR2DERROR PVR2DCreateDeviceContext(PVR2D_ULONG ulDevID,
@@ -657,6 +681,44 @@ PVR2DERROR PVR2DBlt3D (const PVR2DCONTEXTHANDLE hContext, const PPVR2D_3DBLT pBl
 
 PVR2D_IMPORT
 PVR2DERROR PVR2DBlt3DExt (const PVR2DCONTEXTHANDLE hContext, const PPVR2D_3DBLT_EXT pBlt3D);
+
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DModifyPendingOps(const PVR2DCONTEXTHANDLE hContext,
+								 PVR2D_HANDLE *phSyncModObj,
+								 PVR2DMEMINFO *psMemInfo,
+								 PVR2D_BOOL  bIsWriteOp,
+								 PVR2D_ULONG *pulReadOpsPending,
+								 PVR2D_ULONG *pulWriteOpsPending);
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DModifyCompleteOps(const PVR2DCONTEXTHANDLE hContext,
+								  PVR2D_HANDLE hSyncModObj);
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DFlushToSyncModObj(const PVR2DCONTEXTHANDLE hContext,
+								  PVR2D_HANDLE hSyncModObj,
+								  PVR2D_BOOL bWait);
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DTakeSyncToken(const PVR2DCONTEXTHANDLE hContext,
+							  PVR2DMEMINFO *psMemInfo,
+							  PVR2D_HANDLE *phSyncToken,
+							  PVR2D_ULONG *pulReadOpsPending,
+							  PVR2D_ULONG *pulWriteOpsPending);
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DReleaseSyncToken(const PVR2DCONTEXTHANDLE hContext,
+								 PVR2D_HANDLE hSyncToken);
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DFlushToSyncToken(const PVR2DCONTEXTHANDLE hContext,
+								 PVR2DMEMINFO *psMemInfo,
+								 PVR2D_HANDLE hSyncToken,
+								 PVR2D_BOOL bWait);
+
+PVR2D_IMPORT
+PVR2DERROR PVR2DWaitForNextHardwareEvent(const PVR2DCONTEXTHANDLE hContext);
 
 #ifdef __cplusplus
 }

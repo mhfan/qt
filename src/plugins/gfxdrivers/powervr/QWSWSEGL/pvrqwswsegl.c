@@ -336,11 +336,16 @@ static WSEGLError wseglCopyFromPBuffer
 /* Return the parameters of a drawable that are needed by the EGL layer */
 static WSEGLError wseglGetDrawableParameters
     (WSEGLDrawableHandle _drawable, WSEGLDrawableParams *sourceParams,
-     WSEGLDrawableParams *renderParams)
+     WSEGLDrawableParams *renderParams,unsigned long ulPlaneOffset)
 {
     PvrQwsDrawable *drawable = (PvrQwsDrawable *)_drawable;
     PVR2DMEMINFO *source, *render;
     WSEGLPixelFormat pixelFormat;
+
+    WSEGL_UNREFERENCED_PARAMETER(ulPlaneOffset);
+
+	memset(renderParams, 0, sizeof(*renderParams));
+	memset(sourceParams, 0, sizeof(*sourceParams));
 
     if (!pvrQwsGetBuffers(drawable, &source, &render))
         return WSEGL_BAD_DRAWABLE;
@@ -366,7 +371,7 @@ static WSEGLError wseglGetDrawableParameters
     sourceParams->ePixelFormat = pixelFormat;
     sourceParams->pvLinearAddress = source->pBase;
     sourceParams->ui32HWAddress = source->ui32DevAddr;
-    sourceParams->hPrivateData = source->hPrivateData;
+    sourceParams->hMemInfo = source->hPrivateData;
 
     renderParams->ui32Width = drawable->rect.width;
     renderParams->ui32Height = drawable->rect.height;
@@ -374,7 +379,7 @@ static WSEGLError wseglGetDrawableParameters
     renderParams->ePixelFormat = pixelFormat;
     renderParams->pvLinearAddress = render->pBase;
     renderParams->ui32HWAddress = render->ui32DevAddr;
-    renderParams->hPrivateData = render->hPrivateData;
+    renderParams->hMemInfo = render->hPrivateData;
 
     return WSEGL_SUCCESS;
 }
@@ -393,6 +398,20 @@ static WSEGLError wseglDisconnectDrawable(WSEGLDrawableHandle hDrawable)
     return WSEGL_SUCCESS;
 }
 
+/***********************************************************************************
+ Function Name      : WSEGL_FlagStartFrame
+ Inputs             : hDrawable
+ Outputs            : None
+ Returns            : Error code
+ Description        : Indicates that there have been rendering commands submitted
+                                          by a client driver
+************************************************************************************/
+static WSEGLError wseglFlagStartFrame(void)
+{
+        return WSEGL_SUCCESS;
+}
+
+
 static WSEGL_FunctionTable const wseglFunctions = {
     WSEGL_VERSION,
     wseglIsDisplayValid,
@@ -408,7 +427,8 @@ static WSEGL_FunctionTable const wseglFunctions = {
     wseglCopyFromPBuffer,
     wseglGetDrawableParameters,
     wseglConnectDrawable,
-    wseglDisconnectDrawable
+    wseglDisconnectDrawable,
+    wseglFlagStartFrame,
 };
 
 /* Return the table of WSEGL functions to the EGL implementation */
