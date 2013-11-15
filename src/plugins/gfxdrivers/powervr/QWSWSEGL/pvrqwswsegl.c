@@ -379,6 +379,20 @@ static WSEGLError wseglGetDrawableParameters
     return WSEGL_SUCCESS;
 }
 
+/* Function stub for ConnectDrawable() */
+static WSEGLError wseglConnectDrawable(WSEGLDrawableHandle hDrawable)
+{
+    WSEGL_UNREFERENCED_PARAMETER(hDrawable);
+    return WSEGL_SUCCESS;
+}
+
+/* Function stub for DisconnectDrawable() */
+static WSEGLError wseglDisconnectDrawable(WSEGLDrawableHandle hDrawable)
+{
+    WSEGL_UNREFERENCED_PARAMETER(hDrawable);
+    return WSEGL_SUCCESS;
+}
+
 static WSEGL_FunctionTable const wseglFunctions = {
     WSEGL_VERSION,
     wseglIsDisplayValid,
@@ -392,7 +406,9 @@ static WSEGL_FunctionTable const wseglFunctions = {
     wseglWaitNative,
     wseglCopyFromDrawable,
     wseglCopyFromPBuffer,
-    wseglGetDrawableParameters
+    wseglGetDrawableParameters,
+    wseglConnectDrawable,
+    wseglDisconnectDrawable
 };
 
 /* Return the table of WSEGL functions to the EGL implementation */
